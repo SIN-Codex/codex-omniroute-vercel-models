@@ -1,0 +1,35 @@
+# ============================================================================
+# Codex config — Vercel AI Gateway models via OmniRoute
+# ----------------------------------------------------------------------------
+# Copy the relevant parts into your ~/.codex/config.toml (do NOT replace an
+# existing file blindly — merge these keys/sections).
+#
+# Prerequisites:
+#   * Codex CLI >= 0.84 (Responses-API only; chat wire_api was removed).
+#   * OmniRoute running locally on http://localhost:20128/v1
+#   * This bridge running on http://localhost:4001/v1
+#   * OMNIRUTE_API_KEY exported in your shell + launchctl (see README).
+# ============================================================================
+
+# Default model (GLM 5.2 via Vercel AI Gateway / OmniRoute).
+model = "vercel-ai-gateway/zai/glm-5.2"
+
+# Which provider block below to use.
+model_provider = "openai-chat-completions"
+
+# Path to the model catalog (so /model in the TUI lists the Vercel models).
+model_catalog_json = "/PATH/TO/codex-with-vercel-models/codex/model-catalog.json"
+
+# GLM is a reasoning model; high works well.
+model_reasoning_effort = "high"
+
+# --- Provider: speaks the Responses API to localhost:4001 (the bridge) ------
+[model_providers.openai-chat-completions]
+name = "OpenAI using Chat Completions"
+base_url = "http://localhost:4001/v1"
+# The bridge forwards this as the Authorization header to OmniRoute,
+# so it MUST be your OmniRoute API key.
+env_key = "OMNIRUTE_API_KEY"
+wire_api = "responses"
+query_params = {}
+stream_idle_timeout_ms = 300000

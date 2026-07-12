@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PList 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.user.codex-bridge</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/PATH/TO/codex-with-vercel-models/bridge/start.sh</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/tmp/codex-bridge.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/codex-bridge.err.log</string>
+  <key>WorkingDirectory</key>
+  <string>/PATH/TO/codex-with-vercel-models/bridge</string>
+</dict>
+</plist>
