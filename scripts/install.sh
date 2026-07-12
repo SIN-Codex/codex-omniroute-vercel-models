@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install helper for codex-with-vercel-models.
+# Install helper for codex-omniroute-vercel-models.
 # Sets up the bridge + LaunchAgent and prints the manual steps you must do
 # (Codex config merge + OMNIRUTE_API_KEY). Safe to re-run.
 set -e
@@ -18,7 +18,7 @@ echo "==> Installing bridge deps (npm install in bridge/)..."
 # 2) LaunchAgent — rewrite /PATH/TO/... placeholders to this repo
 echo "==> Installing LaunchAgent..."
 mkdir -p "$HOME/Library/LaunchAgents"
-sed "s#/PATH/TO/codex-with-vercel-models#$REPO_DIR#g" "$PLIST_SRC" > "$PLIST_DST"
+sed "s#/PATH/TO/codex-omniroute-vercel-models#$REPO_DIR#g" "$PLIST_SRC" > "$PLIST_DST"
 launchctl unload "$PLIST_DST" 2>/dev/null || true
 launchctl load "$PLIST_DST"
 sleep 2
@@ -32,7 +32,7 @@ echo "==================================================================="
 echo
 echo "1) Merge this into ~/.codex/config.toml (fix the catalog path):"
 echo "   ----"
-sed 's#/PATH/TO/codex-with-vercel-models#'"$REPO_DIR"'#g' "$REPO_DIR/codex/config.toml.example"
+sed 's#/PATH/TO/codex-omniroute-vercel-models#'"$REPO_DIR"'#g' "$REPO_DIR/codex/config.toml.example"
 echo "   ----"
 echo
 echo "2) Set your OmniRoute API key (from ~/.config/opencode/opencode.json"

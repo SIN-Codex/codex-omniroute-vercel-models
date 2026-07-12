@@ -18,7 +18,7 @@ model = "vercel-ai-gateway/zai/glm-5.2"
 model_provider = "openai-chat-completions"
 
 # Path to the model catalog (so /model in the TUI lists the Vercel models).
-model_catalog_json = "/PATH/TO/codex-with-vercel-models/codex/model-catalog.json"
+model_catalog_json = "/PATH/TO/codex-omniroute-vercel-models/codex/model-catalog.json"
 
 # GLM is a reasoning model; high works well.
 model_reasoning_effort = "high"

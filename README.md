@@ -1,4 +1,4 @@
-# codex-with-vercel-models
+# codex-omniroute-vercel-models
 
 Configure [Codex](https://github.com/openai/codex) (CLI + ChatGPT.app) to run on
 **Vercel AI Gateway** models — e.g. **Z.ai GLM 5.2** and **MiniMax M3** (vision) —
@@ -32,6 +32,21 @@ routed through your local **OmniRoute** instance, with a tiny transparent
 
 ## Prerequisites
 
+> ⚠️ **OmniRoute is a HARD REQUIREMENT in this setup.** It must be
+> **installed and running locally** (`http://localhost:20128/v1`) for the
+> whole chain to work — the bridge forwards to it. There is no way around it
+> *in the default config*. (An optional bypass that talks to Vercel directly,
+> removing the OmniRoute dependency, is described at the bottom.)
+>
+> OmniRoute is your own local model router (configured e.g. in
+> `~/.config/opencode/opencode.json` under `providers.omniroute`, or via the
+> `omniroute-config` skill). Make sure:
+> - it is installed and **currently running** (the bridge connects to
+>   `localhost:20128`),
+> - the `vercel-ai-gateway` provider is enabled with models
+>   `zai/glm-5.2`, `minimax/minimax-m3`, …,
+> - you know your OmniRoute API key (used as `OMNIRUTE_API_KEY`).
+
 1. **Codex CLI** ≥ 0.84 — `npm i -g @openai/codex` (or your package manager).
 2. **OmniRoute** running locally on `http://localhost:20128/v1` with the
    `vercel-ai-gateway` provider configured (models `zai/glm-5.2`,
@@ -45,8 +60,8 @@ routed through your local **OmniRoute** instance, with a tiny transparent
 ## Quick start
 
 ```bash
-git clone https://github.com/SIN-Codex/codex-with-vercel-models.git
-cd codex-with-vercel-models
+git clone https://github.com/SIN-Codex/codex-omniroute-vercel-models.git
+cd codex-omniroute-vercel-models
 bash scripts/install.sh
 ```
 
@@ -124,6 +139,26 @@ auto-route by modality — the model choice is always explicit.
 3. Done — `/model` picks it up on next launch.
 
 ---
+
+## Optional: bypass OmniRoute (direct Vercel AI Gateway)
+
+If you do **not** want a local OmniRoute dependency, point the bridge straight
+at Vercel AI Gateway instead:
+
+1. In `bridge/start.sh` set:
+   ```bash
+   export OPENAI_BASE_URL="https://ai-gateway.vercel.sh/v1"
+   ```
+2. Use a **Vercel AI Gateway API key** as `OMNIRUTE_API_KEY` (a real Vercel
+   AI Gateway key, not the OmniRoute one).
+3. In `codex/model-catalog.json` change the slugs from
+   `vercel-ai-gateway/zai/glm-5.2` → `zai/glm-5.2` and
+   `vercel-ai-gateway/minimax/minimax-m3` → `minimax/minimax-m3`
+   (raw Vercel slugs, no `vercel-ai-gateway/` prefix), and update
+   `config.toml.example` + `model` accordingly.
+
+Everything else (bridge, Codex config shape, LaunchAgent) stays identical.
+With this variant OmniRoute is **not** required at all.
 
 ## Security note
 
